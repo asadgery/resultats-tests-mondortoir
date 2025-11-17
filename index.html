@@ -1,243 +1,715 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Rapport de Tests – Mondortoir</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport de Tests - MonDortoir</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 40px;
-        background: #f8f9fa;
-        color: #333;
-        scroll-behavior: smooth;
-    }
-    h1, h2, h3 {
-        color: #003366;
-    }
-    .header {
-        background: #003366;
-        color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        margin-bottom: 30px;
-    }
-    .section {
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        margin-bottom: 30px;
-        border: 1px solid #ddd;
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 15px;
-    }
-    table, th, td {
-        border: 1px solid #ccc;
-    }
-    th {
-        background: #003366;
-        color: white;
-        padding: 10px;
-        text-align: left;
-    }
-    td {
-        padding: 8px;
-    }
-    .critique { color: #b30000; font-weight: bold; }
-    .majeur { color: #cc7a00; font-weight: bold; }
-    .mineur { color: #2b7a2b; font-weight: bold; }
-    .raw-text {
-        white-space: pre-wrap;
-        background: #f0f0f0;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-family: monospace;
-        overflow-x: auto;
-    }
-    .anchor-link {
-        font-size: 0.85em;
-        margin-left: 6px;
-        color: #004c99;
-        text-decoration: none;
-    }
-    .top-link {
-        display: block;
-        margin-top: 15px;
-        text-align: right;
-    }
-</style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .comment-section {
+            background: #f0f9ff;
+            border-left: 5px solid #3b82f6;
+            padding: 20px;
+            margin: 30px;
+            border-radius: 8px;
+        }
+
+        .comment-section h3 {
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8fafc;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .stat-card.success .stat-number { color: #10b981; }
+        .stat-card.error .stat-number { color: #ef4444; }
+        .stat-card.warning .stat-number { color: #f59e0b; }
+
+        .content {
+            padding: 30px;
+        }
+
+        .test-section {
+            margin-bottom: 40px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .section-header:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
+        }
+
+        .section-header h2 {
+            font-size: 1.5em;
+        }
+
+        .toggle-icon {
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+
+        .section-header.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            padding: 20px;
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .subsection {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+        }
+
+        .subsection h3 {
+            color: #374151;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
+        }
+
+        .test-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 8px 0;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .test-item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .test-item.ok {
+            border-left-color: #10b981;
+        }
+
+        .test-item.nok {
+            border-left-color: #ef4444;
+        }
+
+        .test-item.question {
+            border-left-color: #f59e0b;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85em;
+            margin-right: 15px;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .status-badge.ok {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-badge.nok {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-badge.question {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .test-description {
+            flex: 1;
+            color: #374151;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 20px 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .filter-buttons {
+                display: none;
+            }
+            .section-content {
+                display: block !important;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Rapport de Tests</h1>
+            <p>MonDortoir - Plateforme Immobilière</p>
+        </div>
 
-<!-- HEADER -->
-<div class="header" id="top">
-    <h1>Rapport de Tests – Mondortoir</h1>
-    <p>Version 1.0 – Rapport complet incluant résumé exécutif et priorisation.</p>
-</div>
+        <div class="comment-section">
+            <h3>💬 Commentaire Général</h3>
+            <p>Très beau site, vraiment félicitation pour le travail.</p>
+        </div>
 
-<!-- RÉSUMÉ EXÉCUTIF -->
-<div class="section">
-    <h2>Résumé Exécutif <a class="anchor-link" href="#texte-brut">→ Voir texte brut</a></h2>
-    <p>
-        Le site Mondortoir offre une expérience utilisateur moderne et agréable. Le front-office est fonctionnel et stable
-        pour les interactions principales. Cependant, la partie administration présente plusieurs problèmes critiques :
-        liens inactifs, erreurs serveur, données non chargées, incohérences métier.
-    </p>
-    <p>Une phase de corrections prioritaires est indispensable avant la mise en production.</p>
-    <a href="#top" class="top-link">↑ Retour en haut</a>
-</div>
+        <div class="stats">
+            <div class="stat-card success">
+                <div>Tests Réussis</div>
+                <div class="stat-number" id="ok-count">0</div>
+            </div>
+            <div class="stat-card error">
+                <div>Tests Échoués</div>
+                <div class="stat-number" id="nok-count">0</div>
+            </div>
+            <div class="stat-card warning">
+                <div>Questions/Suggestions</div>
+                <div class="stat-number" id="question-count">0</div>
+            </div>
+            <div class="stat-card">
+                <div>Total Tests</div>
+                <div class="stat-number" id="total-count">0</div>
+            </div>
+        </div>
 
-<!-- PRIORISATION -->
-<div class="section">
-    <h2>Tableau de Priorisation des Anomalies <a class="anchor-link" href="#texte-brut">→ Voir texte brut</a></h2>
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterTests('all')">Tous</button>
+            <button class="filter-btn" onclick="filterTests('ok')">✓ Réussis</button>
+            <button class="filter-btn" onclick="filterTests('nok')">✗ Échoués</button>
+            <button class="filter-btn" onclick="filterTests('question')">? Questions</button>
+        </div>
 
-    <table>
-        <tr>
-            <th>Problème</th>
-            <th>Criticité</th>
-            <th>Référence au texte brut</th>
-        </tr>
+        <div class="content">
+            <!-- Tests Utilisateur Standard -->
+            <div class="test-section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>👤 Tests avec un compte utilisateur standard</h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content active">
+                    <p style="margin-bottom: 15px;"><strong>Adresse :</strong> <a href="https://mondortoir.com/" target="_blank">https://mondortoir.com/</a></p>
+                    
+                    <div class="subsection">
+                        <h3>🏠 Accueil</h3>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Affichage de la page</span>
+                        </div>
+                        <div class="test-item question">
+                            <span class="status-badge question">?</span>
+                            <span class="test-description">Les images (propriétés) qui défilent sur le site ne sont pas dans la base ?</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Les liens vers les réseaux sociaux : ils ne fonctionnent pas</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Recherche de biens</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Navigation</span>
+                        </div>
+                    </div>
 
-        <tr>
-            <td>Erreurs serveur lors de la modification des rôles système</td>
-            <td class="critique">Critique</td>
-            <td><a href="#raw-role-erreur">Voir dans texte brut</a></td>
-        </tr>
+                    <div class="subsection">
+                        <h3>ℹ️ À propos</h3>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Affichage de la page</span>
+                        </div>
+                    </div>
 
-        <tr>
-            <td>Actions “Désactiver” sans effet</td>
-            <td class="critique">Critique</td>
-            <td><a href="#raw-desactiver">Voir dans texte brut</a></td>
-        </tr>
+                    <div class="subsection">
+                        <h3>📋 Catalogue</h3>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Affichage de la page</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Action Bouton "Imprimer la fiche technique" : rien ne se passe quand on clique</span>
+                        </div>
+                        <div class="test-item question">
+                            <span class="status-badge question">?</span>
+                            <span class="test-description">Les contacts (Téléphone, Email, Appeler, WhatsApp) de l'agent immobilier sont affichés, ne serait-ce pas judicieux de les cacher ?</span>
+                        </div>
+                    </div>
 
-        <tr>
-            <td>Liens du tableau de bord inactifs ou erronés</td>
-            <td class="critique">Critique</td>
-            <td><a href="#raw-dashboard">Voir dans texte brut</a></td>
-        </tr>
+                    <div class="subsection">
+                        <h3>📞 Contactez-nous</h3>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Envoyer le message (Formulaire de contact)</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Contactez-nous (Par email)</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Contactez-nous (Appel téléphonique)</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Besoin d'aide immédiate ? - Appeler maintenant</span>
+                        </div>
+                    </div>
 
-        <tr>
-            <td>Édition des utilisateurs non fonctionnelle</td>
-            <td class="critique">Critique</td>
-            <td><a href="#raw-edit-user">Voir dans texte brut</a></td>
-        </tr>
+                    <div class="subsection">
+                        <h3>👤 Gérer mon profil</h3>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Déconnexion</span>
+                        </div>
+                        <div class="test-item question">
+                            <span class="status-badge question">?</span>
+                            <span class="test-description">Quelle est l'utilité du compte utilisateur ?</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Authentification à double facteur</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Les statistiques (nombre de transactions, de contrats, liste des contrats, etc.) : ne fonctionnent pas</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Action Bouton "Changer photo profil" : ne fonctionne pas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <tr>
-            <td>Suppression d’un bien impossible (erreur “Bien introuvable”)</td>
-            <td class="critique">Critique</td>
-            <td><a href="#raw-suppr-bien">Voir dans texte brut</a></td>
-        </tr>
+            <!-- Tests Administrateur -->
+            <div class="test-section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>🔐 Tests avec un compte administrateur</h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content active">
+                    <p style="margin-bottom: 15px;"><strong>Adresse :</strong> <a href="https://panel.mondortoir.com/" target="_blank">https://panel.mondortoir.com/</a></p>
+                    
+                    <div class="subsection">
+                        <h3>📊 Tableau de bord</h3>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Affichage de la page</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Carte "Agents immobiliers" : le lien ne renvoie nulle part</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Carte "Propriétés en ligne" : renvoie vers la liste des propriétés</span>
+                        </div>
+                        <div class="test-item question">
+                            <span class="status-badge question">NOK?</span>
+                            <span class="test-description">Carte "Propriétaires" : renvoie vers la liste des utilisateurs, n'est-ce pas la liste des propriétaires que ça devrait afficher ?</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Carte "Contrats conclus" : le lien ne renvoie nulle part</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Carte "Chiffre d'affaire annuel" : affiche une page vide (blanche)</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Carte "Chiffre d'affaire ce mois" : affiche une page vide (blanche)</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Carte "Chiffre d'affaire Le précédent" : affiche une page vide (blanche)</span>
+                        </div>
+                    </div>
 
-        <tr>
-            <td>Bouton “Privilèges” inactif</td>
-            <td class="majeur">Majeur</td>
-            <td><a href="#raw-privileges">Voir dans texte brut</a></td>
-        </tr>
+                    <div class="subsection">
+                        <h3>🏢 Gest. agences</h3>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Affichage de la page</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Fermer"</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Nouvelle agence"</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action "Editer agence"</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Action "Désactiver agence" : message de succès affiché, mais l'agence reste active</span>
+                        </div>
+                    </div>
 
-        <tr>
-            <td>Filtres incorrects (orthographe, options manquantes)</td>
-            <td class="majeur">Majeur</td>
-            <td><a href="#raw-filtres">Voir dans texte brut</a></td>
-        </tr>
+                    <div class="subsection">
+                        <h3>👥 Gest des utilisateurs - Liste</h3>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Affichage de la page</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Fermer"</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton Filtre "Tous les utilisateurs"</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton Filtre "Agents immobiliers"</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton Filtre "Administrateur"</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Bouton Filtre "Propriétéires" : erreur sur le titre du bouton</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton Filtre "Propriétéires"</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Bouton Filtre "Utilisateurs standards" : manquant (possible d'ajouter ?)</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Créer"</span>
+                        </div>
+                        <div class="test-item question">
+                            <span class="status-badge question">?</span>
+                            <span class="test-description">Action Bouton "Créer" : Obligation de choisir une agence, est-ce normal ? Même pour le rôle utilisateur standard</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Action Bouton "Editer un utilisateur" : seule l'agence est chargée, les autres champs ne sont pas chargés</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Désactiver"</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Action Bouton "Privilèges" : le bouton ne réagit pas quand on clique dessus</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Supprimer"</span>
+                        </div>
+                    </div>
 
-        <tr>
-            <td>Bouton “Imprimer la fiche technique” non fonctionnel</td>
-            <td class="majeur">Majeur</td>
-            <td><a href="#raw-imprimer">Voir dans texte brut</a></td>
-        </tr>
+                    <div class="subsection">
+                        <h3>💬 Support clients</h3>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Affichage de la page</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Fermer"</span>
+                        </div>
+                    </div>
 
-        <tr>
-            <td>Liens vers les réseaux sociaux inactifs</td>
-            <td class="mineur">Mineur</td>
-            <td><a href="#raw-reseaux">Voir dans texte brut</a></td>
-        </tr>
+                    <div class="subsection">
+                        <h3>📝 Log des activités</h3>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Affichage de la page</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Fermer"</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Action Bouton "Editer" : le bouton ne réagit pas quand on clique dessus</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Action Bouton "Supprimer" : le bouton ne réagit pas quand on clique dessus</span>
+                        </div>
+                    </div>
 
-        <tr>
-            <td>Impossible de changer la photo de profil</td>
-            <td class="mineur">Mineur</td>
-            <td><a href="#raw-photo-profil">Voir dans texte brut</a></td>
-        </tr>
+                    <div class="subsection">
+                        <h3>🏘️ Gest des biens - Liste</h3>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Affichage de la page</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Fermer"</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Créer"</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Gestion des images"</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Valider"</span>
+                        </div>
+                        <div class="test-item question">
+                            <span class="status-badge question">?</span>
+                            <span class="test-description">Après validation, plus possible d'invalider ?</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Invalider"</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Action Bouton "Supprimer" : Message d'erreur reçu : Bien introuvable</span>
+                        </div>
+                    </div>
 
-    </table>
+                    <div class="subsection">
+                        <h3>📜 Historique</h3>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Affichage de la page</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Fermer"</span>
+                        </div>
+                        <div class="test-item question">
+                            <span class="status-badge question">?</span>
+                            <span class="test-description">Rien (aucune ligne) ne s'affiche, normal ?</span>
+                        </div>
+                    </div>
 
-    <a href="#top" class="top-link">↑ Retour en haut</a>
-</div>
+                    <div class="subsection">
+                        <h3>⚙️ Paramètres - Gestion des rôles</h3>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Affichage de la page</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Fermer"</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Nouveau role"</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Modifier"</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Action Bouton "Modifier" : pour les rôles Administrateur, Agent, Propriétaire, Utilisateur, erreur serveur interne</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Action Bouton "Désactiver" : message de succès affiché, mais les rôles restent actifs</span>
+                        </div>
+                    </div>
 
-<!-- TEXTE BRUT INTÉGRAL -->
-<div class="section" id="texte-brut">
-    <h2>Texte brut complet des tests</h2>
-
-    <div class="raw-text">
-
-<b id="raw-accueil">Tests avec un compte utilisateur standard :</b>
-Adresse : https://mondortoir.com/
-
-Accueil :
-    Affichage de la page : OK.
-    <span id="raw-carousel">Les images (propriétés) qui défilent sur le site ne sont pas dans la base ?</span>
-    <span id="raw-reseaux">Les liens vers les réseaux sociaux : NOK, ils ne fonctionnent pas.</span>
-    Recherche de biens : OK.
-    Navigation : OK.
-
-A propos :
-    Affichage de la page : OK.
-
-Catalogue :
-    Affichage de la page : OK.
-    Consultation de biens :
-        <span id="raw-imprimer">Action Bouton "Imprimer la fiche technique" : NOK, rien ne se passe quand on clique sur le bouton.</span>
-        Suggestion : Contacts de l'agent visibles.
-
-Contactez-nous :
-    OK pour message / mail / appel.
-
-Gérer mon profil :
-    Déconnexion OK.
-    <span id="raw-photo-profil">Changer photo profil : NOK.</span>
-
----
-
-<b id="raw-dashboard">Tests avec un compte administrateur :</b>
-Adresse : https://panel.mondortoir.com/
-
-Tableau de bord :
-    Liens cassés sur plusieurs cartes (agents, propriétaires, CA annuel, CA du mois, CA précédent…).
-
-<b id="raw-gest-agences">Gestion des agences :</b>
-    <span id="raw-desactiver">Désactiver agence : NOK, message succès mais reste actif.</span>
-
-<b id="raw-filtres">Gestion des utilisateurs :</b>
-    Erreur orthographe : "Propriétéires".
-    Filtre "Utilisateurs standards" manquant.
-    <span id="raw-edit-user">Edition utilisateur : seuls certains champs chargés.</span>
-    <span id="raw-privileges">Bouton "Privilèges" : NOK.</span>
-
-Support clients :
-    OK.
-
-Log des activités :
-    Boutons Editer / Supprimer : NOK.
-
-Gestion des biens :
-    <span id="raw-suppr-bien">Supprimer bien : NOK (erreur Bien introuvable).</span>
-
-<b id="raw-role-erreur">Gestion des rôles :</b>
-    Modifier rôle Admin/Agent/etc → Erreur serveur interne.
-    Désactiver un rôle → message succès mais aucun effet.
-
-Droits d’accès :
-    OK pour anciennes ressources.
-    NOK pour nouvelles ressources.
-
+                    <div class="subsection">
+                        <h3>🔒 Droits d'accès</h3>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Affichage de la page</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Action Bouton "Fermer"</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Sélection des rôles et affichage</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Enregistrer : sur les anciennes ressources</span>
+                        </div>
+                        <div class="test-item nok">
+                            <span class="status-badge nok">NOK</span>
+                            <span class="test-description">Enregistrer : sur les nouvelles ressources</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Permissions - Action Bouton "Nouvelle ressource"</span>
+                        </div>
+                        <div class="test-item ok">
+                            <span class="status-badge ok">OK</span>
+                            <span class="test-description">Recherche dans tableau</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <a href="#top" class="top-link">↑ Retour en haut</a>
-</div>
+    <script>
+        function toggleSection(header) {
+            header.classList.toggle('active');
+            const content = header.nextElementSibling;
+            content.classList.toggle('active');
+        }
 
+        function filterTests(type) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const testItems = document.querySelectorAll('.test-item');
+            testItems.forEach(item => {
+                if (type === 'all') {
+                    item.style.display = 'flex';
+                } else {
+                    if (item.classList.contains(type)) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                }
+            });
+        }
+
+        function calculateStats() {
+            const okItems = document.querySelectorAll('.test-item.ok').length;
+            const nokItems = document.querySelectorAll('.test-item.nok').length;
+            const questionItems = document.querySelectorAll('.test-item.question').length;
+            const total = okItems + nokItems + questionItems;
+
+            document.getElementById('ok-count').textContent = okItems;
+            document.getElementById('nok-count').textContent = nokItems;
+            document.getElementById('question-count').textContent = questionItems;
+            document.getElementById('total-count').textContent = total;
+        }
+
+        // Calculer les statistiques au chargement de la page
+        window.addEventListener('DOMContentLoaded', calculateStats);
+    </script>
 </body>
 </html>
