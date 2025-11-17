@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Rapport de Tests – Mondortoir</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        background: #f8f9fa;
+        color: #333;
+    }
+    h1, h2, h3 {
+        color: #003366;
+    }
+    .header {
+        background: #003366;
+        color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    .section {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        border: 1px solid #ddd;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+    table, th, td {
+        border: 1px solid #ccc;
+    }
+    th {
+        background: #003366;
+        color: white;
+        padding: 10px;
+        text-align: left;
+    }
+    td {
+        padding: 8px;
+    }
+    .critique { color: #b30000; font-weight: bold; }
+    .majeur { color: #cc7a00; font-weight: bold; }
+    .mineur { color: #2b7a2b; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Rapport de Tests – Mondortoir</h1>
+    <p>Version 1.0 – Rapport complet incluant résumé exécutif et priorisation.</p>
+</div>
+
+<div class="section">
+    <h2>Résumé Exécutif</h2>
+    <p>
+        Le site Mondortoir offre une expérience utilisateur moderne et agréable. Le front-office est fonctionnel et stable
+        pour les interactions principales. Cependant, la partie administration présente plusieurs problèmes critiques :
+        liens inactifs, erreurs serveur, données non chargées, incohérences métier.
+    </p>
+    <p>
+        Une phase de corrections prioritaires est indispensable avant la mise en production.
+    </p>
+</div>
+
+<div class="section">
+    <h2>Tableau de Priorisation des Anomalies</h2>
+    <table>
+        <tr>
+            <th>Problème</th>
+            <th>Criticité</th>
+            <th>Justification</th>
+        </tr>
+        <tr>
+            <td>Erreurs serveur lors de la modification de rôles système</td>
+            <td class="critique">Critique</td>
+            <td>Impact sécurité et gestion des accès.</td>
+        </tr>
+        <tr>
+            <td>Actions “Désactiver” sans effet</td>
+            <td class="critique">Critique</td>
+            <td>Empêche la gestion correcte des utilisateurs et agences.</td>
+        </tr>
+        <tr>
+            <td>Liens du tableau de bord inactifs</td>
+            <td class="critique">Critique</td>
+            <td>Empêche l'accès aux sections essentielles de gestion.</td>
+        </tr>
+        <tr>
+            <td>Édition des utilisateurs non fonctionnelle</td>
+            <td class="critique">Critique</td>
+            <td>Données vitales non chargées.</td>
+        </tr>
+        <tr>
+            <td>Suppression d’un bien impossible</td>
+            <td class="critique">Critique</td>
+            <td>Empêche la gestion correcte du catalogue.</td>
+        </tr>
+        <tr>
+            <td>Bouton “Privilèges” inactif</td>
+            <td class="majeur">Majeur</td>
+            <td>Limite la gestion détaillée des accès.</td>
+        </tr>
+        <tr>
+            <td>Orthographe et filtres incorrects</td>
+            <td class="majeur">Majeur</td>
+            <td>Problèmes d’ergonomie et cohérence.</td>
+        </tr>
+        <tr>
+            <td>Bouton imprimer la fiche d’un bien inactif</td>
+            <td class="majeur">Majeur</td>
+            <td>Fonction importante pour les utilisateurs.</td>
+        </tr>
+        <tr>
+            <td>Liens réseaux sociaux inactifs</td>
+            <td class="mineur">Mineur</td>
+            <td>Impact faible sur le fonctionnement global.</td>
+        </tr>
+        <tr>
+            <td>Impossible de changer la photo de profil</td>
+            <td class="mineur">Mineur</td>
+            <td>Problème d’expérience utilisateur.</td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
