@@ -1,133 +1,235 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Rapport de Tests – Mondortoir</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 40px;
-        background: #f8f9fa;
-        color: #333;
-    }
-    h1, h2, h3 {
-        color: #003366;
-    }
-    .header {
-        background: #003366;
-        color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        margin-bottom: 30px;
-    }
-    .section {
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        margin-bottom: 30px;
-        border: 1px solid #ddd;
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 15px;
-    }
-    table, th, td {
-        border: 1px solid #ccc;
-    }
-    th {
-        background: #003366;
-        color: white;
-        padding: 10px;
-        text-align: left;
-    }
-    td {
-        padding: 8px;
-    }
+  <meta charset="UTF-8">
+  <title>Rapport de Tests – Mondortoir</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #f8f9fa; color: #333; }
+    h1, h2, h3 { color: #003366; }
+    .header { background: #003366; color: #fff; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
+    .section { background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 30px; border: 1px solid #ddd; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    table, th, td { border: 1px solid #ccc; }
+    th { background: #003366; color: white; padding: 10px; text-align: left; }
+    td { padding: 8px; }
     .critique { color: #b30000; font-weight: bold; }
     .majeur { color: #cc7a00; font-weight: bold; }
     .mineur { color: #2b7a2b; font-weight: bold; }
-</style>
+    .raw-text { white-space: pre-wrap; background: #f0f0f0; padding: 20px; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; }
+    .back-to-top { text-align: right; margin-top: 10px; }
+    a.anchor-link { color: #003366; text-decoration: none; margin-left: 5px; font-size: 0.9em; }
+  </style>
 </head>
 <body>
 
-<div class="header">
+  <div class="header" id="top">
     <h1>Rapport de Tests – Mondortoir</h1>
     <p>Version 1.0 – Rapport complet incluant résumé exécutif et priorisation.</p>
-</div>
+  </div>
 
-<div class="section">
-    <h2>Résumé Exécutif</h2>
+  <!-- Section résumé exécutif -->
+  <div class="section" id="executif">
+    <h2>Résumé Exécutif <a class="anchor-link" href="#raw-text">[Voir texte brut]</a></h2>
     <p>
-        Le site Mondortoir offre une expérience utilisateur moderne et agréable. Le front-office est fonctionnel et stable
-        pour les interactions principales. Cependant, la partie administration présente plusieurs problèmes critiques :
-        liens inactifs, erreurs serveur, données non chargées, incohérences métier.
+      Le site Mondortoir offre une expérience utilisateur moderne et agréable. Le front-office est fonctionnel et stable
+      pour les interactions principales. Cependant, la partie administration présente plusieurs problèmes critiques :
+      liens inactifs, erreurs serveur, données non chargées, incohérences métier.
     </p>
     <p>
-        Une phase de corrections prioritaires est indispensable avant la mise en production.
+      Une phase de corrections prioritaires est indispensable avant la mise en production.
     </p>
-</div>
+    <div class="back-to-top"><a href="#top">↑ Haut de page</a></div>
+  </div>
 
-<div class="section">
-    <h2>Tableau de Priorisation des Anomalies</h2>
+  <!-- Section priorisation -->
+  <div class="section" id="priorisation">
+    <h2>Tableau de Priorisation des Anomalies <a class="anchor-link" href="#raw-text">[Voir texte brut]</a></h2>
     <table>
-        <tr>
-            <th>Problème</th>
-            <th>Criticité</th>
-            <th>Justification</th>
-        </tr>
-        <tr>
-            <td>Erreurs serveur lors de la modification de rôles système</td>
-            <td class="critique">Critique</td>
-            <td>Impact sécurité et gestion des accès.</td>
-        </tr>
-        <tr>
-            <td>Actions “Désactiver” sans effet</td>
-            <td class="critique">Critique</td>
-            <td>Empêche la gestion correcte des utilisateurs et agences.</td>
-        </tr>
-        <tr>
-            <td>Liens du tableau de bord inactifs</td>
-            <td class="critique">Critique</td>
-            <td>Empêche l'accès aux sections essentielles de gestion.</td>
-        </tr>
-        <tr>
-            <td>Édition des utilisateurs non fonctionnelle</td>
-            <td class="critique">Critique</td>
-            <td>Données vitales non chargées.</td>
-        </tr>
-        <tr>
-            <td>Suppression d’un bien impossible</td>
-            <td class="critique">Critique</td>
-            <td>Empêche la gestion correcte du catalogue.</td>
-        </tr>
-        <tr>
-            <td>Bouton “Privilèges” inactif</td>
-            <td class="majeur">Majeur</td>
-            <td>Limite la gestion détaillée des accès.</td>
-        </tr>
-        <tr>
-            <td>Orthographe et filtres incorrects</td>
-            <td class="majeur">Majeur</td>
-            <td>Problèmes d’ergonomie et cohérence.</td>
-        </tr>
-        <tr>
-            <td>Bouton imprimer la fiche d’un bien inactif</td>
-            <td class="majeur">Majeur</td>
-            <td>Fonction importante pour les utilisateurs.</td>
-        </tr>
-        <tr>
-            <td>Liens réseaux sociaux inactifs</td>
-            <td class="mineur">Mineur</td>
-            <td>Impact faible sur le fonctionnement global.</td>
-        </tr>
-        <tr>
-            <td>Impossible de changer la photo de profil</td>
-            <td class="mineur">Mineur</td>
-            <td>Problème d’expérience utilisateur.</td>
-        </tr>
+      <tr><th>Problème</th><th>Criticité</th><th>Justification</th></tr>
+      <tr>
+        <td>Erreurs serveur lors de la modification de rôles système</td>
+        <td class="critique">Critique</td>
+        <td>Impact sécurité et gestion des accès. (<a href="#raw-roles-erreur">raw</a>)</td>
+      </tr>
+      <tr>
+        <td>Actions “Désactiver” sans effet</td>
+        <td class="critique">Critique</td>
+        <td>Empêche la gestion correcte des utilisateurs et agences. (<a href="#raw-desactiver">raw</a>)</td>
+      </tr>
+      <tr>
+        <td>Liens du tableau de bord inactifs</td>
+        <td class="critique">Critique</td>
+        <td>Empêche l'accès aux sections essentielles de gestion. (<a href="#raw-dashboard-liens">raw</a>)</td>
+      </tr>
+      <tr>
+        <td>Édition des utilisateurs non fonctionnelle</td>
+        <td class="critique">Critique</td>
+        <td>Données vitales non chargées. (<a href="#raw-edit-user">raw</a>)</td>
+      </tr>
+      <tr>
+        <td>Suppression d’un bien impossible</td>
+        <td class="critique">Critique</td>
+        <td>Empêche la gestion correcte du catalogue. (<a href="#raw-suppr-bien">raw</a>)</td>
+      </tr>
+      <tr>
+        <td>Bouton “Privilèges” inactif</td>
+        <td class="majeur">Majeur</td>
+        <td>Limite la gestion détaillée des accès. (<a href="#raw-privileges">raw</a>)</td>
+      </tr>
+      <tr>
+        <td>Orthographe et filtres incorrects</td>
+        <td class="majeur">Majeur</td>
+        <td>Problèmes d’ergonomie et cohérence. (<a href="#raw-filtres-orthographe">raw</a>)</td>
+      </tr>
+      <tr>
+        <td>Bouton imprimer la fiche d’un bien inactif</td>
+        <td class="majeur">Majeur</td>
+        <td>Fonction importante pour les utilisateurs. (<a href="#raw-imprimer-fiche">raw</a>)</td>
+      </tr>
+      <tr>
+        <td>Liens réseaux sociaux inactifs</td>
+        <td class="mineur">Mineur</td>
+        <td>Impact faible sur le fonctionnement global. (<a href="#raw-reseaux">raw</a>)</td>
+      </tr>
+      <tr>
+        <td>Impossible de changer la photo de profil</td>
+        <td class="mineur">Mineur</td>
+        <td>Problème d’expérience utilisateur. (<a href="#raw-photo-profil">raw</a>)</td>
+      </tr>
+      <tr>
+        <td>Images du carrousel ne correspondant pas à la base</td>
+        <td class="mineur">Mineur</td>
+        <td>Impact visuel uniquement. (<a href="#raw-carousel">raw</a>)</td>
+      </tr>
+      <tr>
+        <td>Mélange entre liste d’utilisateurs et propriétaires</td>
+        <td class="mineur">Mineur</td>
+        <td>Incohérence de navigation mais non bloquant. (<a href="#raw-proprietaires">raw</a>)</td>
+      </tr>
     </table>
-</div>
+    <div class="back-to-top"><a href="#top">↑ Haut de page</a></div>
+  </div>
+
+  <!-- Section texte brut -->
+  <div class="section" id="raw-text">
+    <h2>Texte brut des tests</h2>
+    <div class="raw-text">
+<!-- Ici, on met tout ton texte brut, avec des ancres pour les points -->
+<p id="raw-accueil">[Tests avec un compte utilisateur standard ]:  
+Adresse : https://mondortoir.com/  
+Accueil :  
+  Affichage de la page : OK.  
+  Les images (propriétés) qui défilent sur le site ne sont pas dans la base ?  
+  Les liens vers les réseaux sociaux : NOK, ils ne fonctionnent pas.  
+  Recherche de biens : OK.  
+  Navigation : OK.</p>
+
+<p id="raw-a-propos">A propos :  
+  Affichage de la page : OK.</p>
+
+<p id="raw-catalogue">Catalogue :  
+  Affichage de la page : OK.  
+  Consultation de biens :  
+    Action Bouton "Imprimer la fiche technique" : NOK, rien ne se passe quand on clique sur le bouton.  
+    (Question/Suggestion) : Les contacts (Téléphone, Email, Appeler, WhatsApp) de l'agent immobilier sont affichés, ne serait-ce pas judicieux de les cachés ?</p>
+
+<p id="raw-contact">Contactez-nous  
+  Envoyer le message (Formulaire de contact) : OK.  
+  Contactez-nous (Par email) : OK.  
+  Contactez-nous (Appel téléphonique) : OK.  
+  Besoin d'aide immédiate ? :  
+    Appeler maintenant : OK.</p>
+
+<p id="raw-profil">Gérer mon profil :  
+  Déconnexion : OK.  
+  (Question) : Quelle est l'utilité du compte utilisateur ?  
+  Authentification à double facteur : OK.  
+  Les statistiques (nombre de transactions, de contrats, liste des contrats, etc.) dans le profil d'utilisateur : NOK, ils ne fonctionnent pas.  
+  Action Bouton "Changer photo profil" : NOK, il ne fonctinne pas.</p>
+
+<p id="raw-dashboard-liens">[Tests avec un compte administrateur ]:  
+Adresse : https://panel.mondortoir.com/  
+Tableau de bord :  
+  Affichage de la page : OK.  
+  carte "Agents immobiliers" : NOK, le lien derrière ne renvoie nulle part  
+  carte "Propriétés en ligne" : OK, le lien derrière renvoie vers la liste des propriétés.  
+  carte "Propriétaires" : NOK?, le lien derrière renvoie vers la liste des utilisateurs : n'est-ce pas la liste des propriétaires que ça devrait afficher ?  
+  carte "Contrats conclus" : NOK, le lien derrière ne renvoie nulle part.  
+  carte "Chiffre d'affaire annuel" : NOK, le lien derrière affiche une page vide (blanche).  
+  carte "Chiffre d'affaire ce mois" : NOK, le lien derrière affiche une page vide (blanche).  
+  carte "Chiffre d'affaire Le précédent" : NOK, le lien derrière affiche une page vide (blanche).</p>
+
+<p id="raw-gest-agences">Gest. agences :  
+  Affichage de la page : OK.  
+  Action Bouton "Fermer" : OK  
+  Action Bouton "Nouvelle agence" : OK  
+  Action "Editer agence" : OK  
+  Action "Désactiver agence" : NOK, un message de succès de l'action s'affiche, mais l'agence dans la liste reste active</p>
+
+<p id="raw-liste-utilisateurs">Gest des utilisateurs :  
+  Liste :  
+    Affichage de la page : OK.  
+    Action Bouton "Fermer" : OK.  
+    Action Bouton Filtre "Tous les utilisateurs" : OK.  
+    Action Bouton Filtre "Agents immobiliers" : OK.  
+    Action Bouton Filtre "Administrateur" : OK.  
+    Bouton Filtre "Propriétéires" : NOK, erreur sur le titre du bouton.  
+    Action Bouton Filtre "Propriétéires" : OK.  
+    Bouton Filtre "Utilisateurs standards" pour filtrer les utilisateurs standards : NOK, manquant (possible d'ajouter) ?  
+    Action Bouton "Créer" : OK.  
+    Action Bouton "Créer" : Obligation de choisir une agence, est-ce normal ? Même quand tu prends le rôle utilisateur standard, il faut obligatoirement choisir une agence.  
+    Action Bouton "Editer un utilisateur" : NOK, seule l'agence est chargée, les autres champs ne sont pas chargés.  
+    Action Bouton "Désactiver" : OK.  
+    Action Bouton "Privilèges" : NOK, le bouton ne ragit pas quand on clique dessus.  
+    Action Bouton "Supprimer" : OK.</p>
+
+<p id="raw-support">Support clients :  
+  Affichage de la page : OK.  
+  Action Bouton "Fermer" : OK.</p>
+
+<p id="raw-log-activites">Log des activités :  
+  Affichage de la page : OK.  
+  Action Bouton "Fermer" : OK.  
+  Action Bouton "Editer" : NOK, le bouton ne ragit pas quand on clique dessus.  
+  Action Bouton "Supprimer" : NOK, le bouton ne ragit pas quand on clique dessus.</p>
+
+<p id="raw-biens">Gest des biens :  
+  Liste :  
+    Affichage de la page : OK.  
+    Action Bouton "Fermer" : OK.  
+    Action Bouton "Créer" : OK.  
+    Action Bouton "Gestion des images" : OK.  
+    Action Bouton "Valider" : OK.  
+    (Question) : Après validation, plus possible d'invalider ?  
+    Action Bouton "Invalider" : OK.  
+    Action Bouton "Supprimer" : NOK, Message d'erreur reçu : Bien introuvable.  
+  Historique :  
+    Affichage de la page : OK.  
+    Action Bouton "Fermer" : OK.  
+    (Question) : Rien (aucune ligne) ne s'affiche, normal ?</p>
+
+<p id="raw-roles-erreur">Paramètres :  
+  Gestion des roles :  
+    Affichage de la page : OK.  
+    Action Bouton "Fermer" : OK.  
+    Action Bouton "Nouveau role" : OK.  
+    Action Bouton "Modifier" : OK.  
+    Action Bouton "Modifier" : NOK, pour les roles Administrateur, Agent, Propriétaire, Utilisateur, l'on reçoit un message d'erreur : Erreur serveur interne.  
+    Action Bouton "Désactiver" : NOK, Affiche un message de succès, mais les roles restent actifs.</p>
+
+<p id="raw-droits-acces">Droits d'accès :  
+  Affichage de la page : OK.  
+  Action Bouton "Fermer" : OK.  
+  Droits d'accès :  
+    Sélection des roles et affichage : OK.  
+    Enregistrer : OK, sur les anciennes ressources.  
+    Enregistrer : NOK, sur les nouvelles ressources.  
+  Permissions :  
+    Action Bouton "Nouvelle ressource" : OK.  
+    Recherche dans tableau : OK.</p>
+    </div>
+    <div class="back-to-top"><a href="#top">↑ Haut de page</a></div>
+  </div>
 
 </body>
 </html>
